@@ -1,6 +1,7 @@
 print("Warming up...")
 import ROOT
 import glob
+ROOT.EnableImplicitMT(16)
 ROOT.gROOT.SetBatch()
 
 ROOT.xAOD.Init()
@@ -12,13 +13,24 @@ ROOT.xAOD.EventInfo()
 ROOT.gInterpreter.Declare('#include "libPhys.h"')
 
 from xAODDataSource import Helpers
-print("Done setting up libraries, running...")
+print("Done setting up libraries")
 
-# mc20e_ggf_hyy
-f = glob.glob("mc20_13TeV.343981.PowhegPythia8EvtGen_NNLOPS_nnlo_30_ggH125_gamgam.deriv.DAOD_PHYS.e5607_s3681_r13145_p7018/*.root.1")[:1]
+# mc23e_ggf_hyy
+f = glob.glob("mc23_13p6TeV.602421.PhPy8EG_PDF4LHC21_ggH_NNLOPS_gammagamma.deriv.DAOD_PHYS.e8559_s4369_r16083_p7017/*.root.1")
+# # mc20e_ggf_hyy
+# f = glob.glob("mc20_13TeV.343981.PowhegPythia8EvtGen_NNLOPS_nnlo_30_ggH125_gamgam.deriv.DAOD_PHYS.e5607_s3681_r13145_p7018/*.root.1")
+# # mc23e_vbf_hyy
+# f = glob.glob("mc23_13p6TeV.601482.PhPy8EG_PDF4LHC21_VBFH125_gammagamma.deriv.DAOD_PHYS.e8559_s4369_r16083_p7017/*.root.1")
+# # mc20e_vbf_hyy
+# f = glob.glob("mc20_13TeV.346214.PowhegPy8EG_NNPDF30_AZNLOCTEQ6L1_VBFH125_gamgam.deriv.DAOD_PHYS.e6970_s3681_r13145_p7018/*.root.1")
 
 df = Helpers.MakexAODDataFrame(f)
-df = df.Range(0, 10)
-df = df.Filter("TruthBosonsWithDecayParticles.size() >= 3", "TruthBosonsWithDecayParticles.size() >= 3")
-df = df.Define("tmp", "printTruthParticles(TruthBosonsWithDecayParticles)")
-df.Histo1D("tmp", "tmp").GetValue()
+
+twt = ROOT.PMGTools.PMGTruthWeightTool('truth_weight_tool')
+twt.initialize()
+weight_names = [str(weight_name) for weight_name in twt.getWeightNames() if "nnlops" in weight_name]
+column_names = [weight_name.strip().replace('-', '_').replace(' ', '_').replace('.', 'p').replace(':', '_').replace('=', '_') for weight_name in weight_names]
+print("Saving weights:")
+print(weight_names)
+
+twt_ptr = ROOT.addressof(twt)
