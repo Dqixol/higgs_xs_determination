@@ -1,0 +1,3 @@
+[submodule "source_hwt/TruthWeightTools"]
+	path = source_hwt/TruthWeightTools
+	url = ssh://git@gitlab.cern.ch:7999/atlas_higgs_combination/software/TruthWeightTools.git
