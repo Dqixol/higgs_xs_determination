@@ -19,11 +19,11 @@ channels = ["mc20e_ggf_hyy", "mc23e_vbf_hyy", "mc20e_vbf_hyy", "mc23e_ggf_hyy"]
 channels = [channel for channel in channels if 'mc20e_vbf_hyy' in channel]
 
 weights_to_save = [
-    "hw_nominal",     #   -> nominal MC weight
-    "hw_pdf4lhc_unc", #   -> 30 Eigen variation for PHD4LHC
-    "hw_alphaS_up",   #   -> up alpha_s variaton for PHD4LHC
-    "hw_alphaS_dn", #   -> down alpha_s variaton for PHD4LHC
-    "hw_qcd",         #   -> muR/muF variation for the given MC
+    "hw_nominal",     # nominal MC weight
+    "hw_pdf4lhc_unc", # 30 Eigen variation for PHD4LHC
+    "hw_alphaS_up",   # up alpha_s variaton for PHD4LHC
+    "hw_alphaS_dn",   # down alpha_s variaton for PHD4LHC
+    "hw_qcd",         # muR/muF variation for the given MC
 ]
 
 # for wrights used see: https://gitlab.cern.ch/atlas_higgs_combination/software/TruthWeightTools/blob/master/Root/HiggsWeightTool.cxx#L131

@@ -62,11 +62,5 @@ TruthWeightTools::HiggsWeights getHiggsWeights(const xAOD::EventInfo& eventInfo,
         HTXS_Stage1p2Fine, 
         &eventInfo
     );
-
-    // hw.nominal -> nominal MC weight
-    // hw.pdf4lhc_unc -> 30 Eigen variation for PHD4LHC
-    // hw.alphaS_up -> up alpha_s variaton for PHD4LHC
-    // hw.alphaS_down -> down alpha_s variaton for PHD4LHC
-    // hw.qcd -> muR/muF variation for the given MC
     return hw;
 }
