@@ -3,3 +3,4 @@
 *.root
 build
 __pycache__
+logs
