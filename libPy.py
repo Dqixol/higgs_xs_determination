@@ -1,0 +1,156 @@
+import ROOT
+
+def getHiggsWeightTool(df, channel):
+    hwt = ROOT.TruthWeightTools.HiggsWeightTool( f"HiggsWeightTool_{channel}" )
+    if 'vbf' in channel or 'VH-Had' in channel:
+        hwt.setProperty( "ProdMode", "qq2H"  )
+    elif 'ggf' in channel:
+        hwt.setProperty( "RequireFinite", True )
+        hwt.setProperty( "WeightCutOff", 100.0 )
+        hwt.setProperty( "ProdMode", "ggF" )
+    elif 'WpH' in channel or 'WmH' in channel:
+        hwt.setProperty( "ProdMode", "WH" )
+    elif 'qqZH' in channel:
+        hwt.setProperty( "ProdMode", "qqZH" )
+    elif 'ggZH' in channel:
+        hwt.setProperty( "ProdMode", "ggZH" )
+    elif 'ttH' in channel:
+        hwt.setProperty( "ProdMode", "ttH" )
+    hwt.initialize()
+    hwt_ptr = ROOT.addressof(hwt)
+    df = df.Define('hwt', f'''
+        auto ret = reinterpret_cast<TruthWeightTools::HiggsWeightTool*>({hwt_ptr});
+        return ret;
+    ''')
+    return df, hwt
+
+stage_1_2_fine = {
+    'ggf' : {
+        100 : 'GG2H_FWDH',
+        101 : 'GG2H_PTH_200_300_PTHJoverPTH_0_15',
+        102 : 'GG2H_PTH_300_450_PTHJoverPTH_0_15',
+        103 : 'GG2H_PTH_450_650_PTHJoverPTH_0_15',
+        104 : 'GG2H_PTH_GT650_PTHJoverPTH_0_15',
+        105 : 'GG2H_PTH_200_300_PTHJoverPTH_GT15',
+        106 : 'GG2H_PTH_300_450_PTHJoverPTH_GT15',
+        107 : 'GG2H_PTH_450_650_PTHJoverPTH_GT15',
+        108 : 'GG2H_PTH_GT650_PTHJoverPTH_GT15',
+        109 : 'GG2H_0J_PTH_0_10',
+        110 : 'GG2H_0J_PTH_GT10',
+        111 : 'GG2H_1J_PTH_0_60',
+        112 : 'GG2H_1J_PTH_60_120',
+        113 : 'GG2H_1J_PTH_120_200',
+        114 : 'GG2H_GE2J_MJJ_0_350_PTH_0_60_PTHJJ_0_25',
+        115 : 'GG2H_GE2J_MJJ_0_350_PTH_60_120_PTHJJ_0_25',
+        116 : 'GG2H_GE2J_MJJ_0_350_PTH_120_200_PTHJJ_0_25',
+        117 : 'GG2H_GE2J_MJJ_0_350_PTH_0_60_PTHJJ_GT25',
+        118 : 'GG2H_GE2J_MJJ_0_350_PTH_60_120_PTHJJ_GT25',
+        119 : 'GG2H_GE2J_MJJ_0_350_PTH_120_200_PTHJJ_GT25',
+        120 : 'GG2H_GE2J_MJJ_350_700_PTH_0_200_PTHJJ_0_25',
+        121 : 'GG2H_GE2J_MJJ_350_700_PTH_0_200_PTHJJ_GT25',
+        122 : 'GG2H_GE2J_MJJ_700_1000_PTH_0_200_PTHJJ_0_25',
+        123 : 'GG2H_GE2J_MJJ_700_1000_PTH_0_200_PTHJJ_GT25',
+        124 : 'GG2H_GE2J_MJJ_1000_1500_PTH_0_200_PTHJJ_0_25',
+        125 : 'GG2H_GE2J_MJJ_1000_1500_PTH_0_200_PTHJJ_GT25',
+        126 : 'GG2H_GE2J_MJJ_GT1500_PTH_0_200_PTHJJ_0_25',
+        127 : 'GG2H_GE2J_MJJ_GT1500_PTH_0_200_PTHJJ_GT25',
+    },
+    'vbf'  : {
+        200 : 'QQ2HQQ_FWDH',
+        201 : 'QQ2HQQ_0J',
+        202 : 'QQ2HQQ_1J',
+        203 : 'QQ2HQQ_GE2J_MJJ_0_60_PTHJJ_0_25',
+        204 : 'QQ2HQQ_GE2J_MJJ_60_120_PTHJJ_0_25',
+        205 : 'QQ2HQQ_GE2J_MJJ_120_350_PTHJJ_0_25',
+        206 : 'QQ2HQQ_GE2J_MJJ_0_60_PTHJJ_GT25',
+        207 : 'QQ2HQQ_GE2J_MJJ_60_120_PTHJJ_GT25',
+        208 : 'QQ2HQQ_GE2J_MJJ_120_350_PTHJJ_GT25',
+        209 : 'QQ2HQQ_GE2J_MJJ_350_700_PTH_0_200_PTHJJ_0_25',
+        210 : 'QQ2HQQ_GE2J_MJJ_350_700_PTH_0_200_PTHJJ_GT25',
+        211 : 'QQ2HQQ_GE2J_MJJ_700_1000_PTH_0_200_PTHJJ_0_25',
+        212 : 'QQ2HQQ_GE2J_MJJ_700_1000_PTH_0_200_PTHJJ_GT25',
+        213 : 'QQ2HQQ_GE2J_MJJ_1000_1500_PTH_0_200_PTHJJ_0_25',
+        214 : 'QQ2HQQ_GE2J_MJJ_1000_1500_PTH_0_200_PTHJJ_GT25',
+        215 : 'QQ2HQQ_GE2J_MJJ_GT1500_PTH_0_200_PTHJJ_0_25',
+        216 : 'QQ2HQQ_GE2J_MJJ_GT1500_PTH_0_200_PTHJJ_GT25',
+        217 : 'QQ2HQQ_GE2J_MJJ_350_700_PTH_GT200_PTHJJ_0_25',
+        218 : 'QQ2HQQ_GE2J_MJJ_350_700_PTH_GT200_PTHJJ_GT25',
+        219 : 'QQ2HQQ_GE2J_MJJ_700_1000_PTH_GT200_PTHJJ_0_25',
+        220 : 'QQ2HQQ_GE2J_MJJ_700_1000_PTH_GT200_PTHJJ_GT25',
+        221 : 'QQ2HQQ_GE2J_MJJ_1000_1500_PTH_GT200_PTHJJ_0_25',
+        222 : 'QQ2HQQ_GE2J_MJJ_1000_1500_PTH_GT200_PTHJJ_GT25',
+        223 : 'QQ2HQQ_GE2J_MJJ_GT1500_PTH_GT200_PTHJJ_0_25',
+        224 : 'QQ2HQQ_GE2J_MJJ_GT1500_PTH_GT200_PTHJJ_GT25',
+    },
+    'wh'   : {
+        300 : 'QQ2HLNU_FWDH',
+        301 : 'QQ2HLNU_PTV_0_75_0J',
+        302 : 'QQ2HLNU_PTV_75_150_0J',
+        303 : 'QQ2HLNU_PTV_150_250_0J',
+        304 : 'QQ2HLNU_PTV_250_400_0J',
+        305 : 'QQ2HLNU_PTV_GT400_0J',
+        306 : 'QQ2HLNU_PTV_0_75_1J',
+        307 : 'QQ2HLNU_PTV_75_150_1J',
+        308 : 'QQ2HLNU_PTV_150_250_1J',
+        309 : 'QQ2HLNU_PTV_250_400_1J',
+        310 : 'QQ2HLNU_PTV_GT400_1J',
+        311 : 'QQ2HLNU_PTV_0_75_GE2J',
+        312 : 'QQ2HLNU_PTV_75_150_GE2J',
+        313 : 'QQ2HLNU_PTV_150_250_GE2J',
+        314 : 'QQ2HLNU_PTV_250_400_GE2J',
+        315 : 'QQ2HLNU_PTV_GT400_GE2J',
+    },
+    'qqzh' : {
+        400 : 'QQ2HLL_FWDH',
+        401 : 'QQ2HLL_PTV_0_75_0J',
+        402 : 'QQ2HLL_PTV_75_150_0J',
+        403 : 'QQ2HLL_PTV_150_250_0J',
+        404 : 'QQ2HLL_PTV_250_400_0J',
+        405 : 'QQ2HLL_PTV_GT400_0J',
+        406 : 'QQ2HLL_PTV_0_75_1J',
+        407 : 'QQ2HLL_PTV_75_150_1J',
+        408 : 'QQ2HLL_PTV_150_250_1J',
+        409 : 'QQ2HLL_PTV_250_400_1J',
+        410 : 'QQ2HLL_PTV_GT400_1J',
+        411 : 'QQ2HLL_PTV_0_75_GE2J',
+        412 : 'QQ2HLL_PTV_75_150_GE2J',
+        413 : 'QQ2HLL_PTV_150_250_GE2J',
+        414 : 'QQ2HLL_PTV_250_400_GE2J',
+        415 : 'QQ2HLL_PTV_GT400_GE2J',
+    },
+    'ggZH' : {
+        500 : 'GG2HLL_FWDH',
+        501 : 'GG2HLL_PTV_0_75_0J',
+        502 : 'GG2HLL_PTV_75_150_0J',
+        503 : 'GG2HLL_PTV_150_250_0J',
+        504 : 'GG2HLL_PTV_250_400_0J',
+        505 : 'GG2HLL_PTV_GT400_0J',
+        506 : 'GG2HLL_PTV_0_75_1J',
+        507 : 'GG2HLL_PTV_75_150_1J',
+        508 : 'GG2HLL_PTV_150_250_1J',
+        509 : 'GG2HLL_PTV_250_400_1J',
+        510 : 'GG2HLL_PTV_GT400_1J',
+        511 : 'GG2HLL_PTV_0_75_GE2J',
+        512 : 'GG2HLL_PTV_75_150_GE2J',
+        513 : 'GG2HLL_PTV_150_250_GE2J',
+        514 : 'GG2HLL_PTV_250_400_GE2J',
+        515 : 'GG2HLL_PTV_GT400_GE2J',
+    },
+    'tth'  : {
+        600 : 'TTH_FWDH', 
+        601 : 'TTH_PTH_0_60',
+        602 : 'TTH_PTH_60_120',
+        603 : 'TTH_PTH_120_200',
+        604 : 'TTH_PTH_200_300',
+        605 : 'TTH_PTH_300_450',
+        606 : 'TTH_PTH_GT450',
+    },
+    'bbh'  : {
+        700 : 'BBH_FWDH', 
+        701 : 'BBH',
+    },
+    'th'   : {
+        800 : 'TH_FWDH', 
+        801 : 'TH'
+    },
+}
