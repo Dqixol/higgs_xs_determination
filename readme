@@ -2,3 +2,9 @@ setupATLAS
 asetup --stable AnalysisBase,25.2,latest 
 rm -rf build; mkdir build; cd build; cmake ../source_hwt; make; cd ..; source build/*/setup.sh;
 python ntupler.py
+
+
+setupATLAS
+asetup --stable AnalysisBase,25.2,latest 
+source build/*/setup.sh;
+python ntupler.py

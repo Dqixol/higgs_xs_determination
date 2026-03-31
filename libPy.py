@@ -2,19 +2,19 @@ import ROOT
 
 def getHiggsWeightTool(df, channel):
     hwt = ROOT.TruthWeightTools.HiggsWeightTool( f"HiggsWeightTool_{channel}" )
-    if 'vbf' in channel or 'VH-Had' in channel:
-        hwt.setProperty( "ProdMode", "qq2H"  )
+    if 'vbf' in channel:
+        hwt.setProperty( "ProdMode", "VBF"  )
     elif 'ggf' in channel:
         hwt.setProperty( "RequireFinite", True )
         hwt.setProperty( "WeightCutOff", 100.0 )
         hwt.setProperty( "ProdMode", "ggF" )
-    elif 'WpH' in channel or 'WmH' in channel:
+    elif 'wph' in channel or 'wmh' in channel:
         hwt.setProperty( "ProdMode", "WH" )
-    elif 'qqZH' in channel:
+    elif 'qqzh' in channel:
         hwt.setProperty( "ProdMode", "qqZH" )
-    elif 'ggZH' in channel:
+    elif 'ggzh' in channel:
         hwt.setProperty( "ProdMode", "ggZH" )
-    elif 'ttH' in channel:
+    elif 'tth' in channel:
         hwt.setProperty( "ProdMode", "ttH" )
     hwt.initialize()
     hwt_ptr = ROOT.addressof(hwt)
@@ -23,6 +23,39 @@ def getHiggsWeightTool(df, channel):
         return ret;
     ''')
     return df, hwt
+
+official_1_2_fine = {
+    'ggf' : {
+        'gg2H_0J_ptH_0_10' : 13.6786,
+        'gg2H_0J_ptH_gt10' : 42.5421,
+        'gg2H_1J_ptH_0_60' : 13.3944,
+        'gg2H_1J_ptH_60_120' : 9.26889,
+        'gg2H_1J_ptH_120_200' : 1.53245,
+        'gg2H_ge2J_mJJ_0_350_ptH_0_60_ptHJJ_0_25' : 1.33049,
+        'gg2H_ge2J_mJJ_0_350_ptH_60_120_ptHJJ_0_25' : 1.96731,
+        'gg2H_ge2J_mJJ_0_350_ptH_120_200_ptHJJ_0_25' : 0.718604,
+        'gg2H_ge2J_mJJ_0_350_ptH_0_60_ptHJJ_gt25' : 1.06841,
+        'gg2H_ge2J_mJJ_0_350_ptH_60_120_ptHJJ_gt25' : 1.69202,
+        'gg2H_ge2J_mJJ_0_350_ptH_120_200_ptHJJ_gt25' : 1.1717,
+        'gg2H_ge2J_mJJ_350_700_ptH_0_200_ptHJJ_0_25' : 0.514373,
+        'gg2H_ge2J_mJJ_350_700_ptH_0_200_ptHJJ_gt25' : 0.732746,
+        'gg2H_ge2J_mJJ_700_1000_ptH_0_200_ptHJJ_0_25' : 0.116985,
+        'gg2H_ge2J_mJJ_700_1000_ptH_0_200_ptHJJ_gt25' : 0.177777,
+        'gg2H_ge2J_mJJ_1000_1500_ptH_0_200_ptHJJ_0_25' : 0.06526,
+        'gg2H_ge2J_mJJ_1000_1500_ptH_0_200_ptHJJ_gt25' : 0.0997468,
+        'gg2H_ge2J_mJJ_gt1500_ptH_0_200_ptHJJ_0_25' : 0.0338097,
+        'gg2H_ge2J_mJJ_gt1500_ptH_0_200_ptHJJ_gt25' : 0.0499217,
+        'gg2H_ptH_200_300_ptHJoverptH_0_15' : 0.214378,
+        'gg2H_ptH_300_450_ptHJoverptH_0_15' : 0.0604692,
+        'gg2H_ptH_450_650_ptHJoverptH_0_15' : 0.0102872,
+        'gg2H_ptH_gt650_ptHJoverptH_0_15' : 0.00148133,
+        'gg2H_ptH_200_300_ptHJoverptH_gt15' : 0.709168,
+        'gg2H_ptH_300_450_ptHJoverptH_gt15' : 0.154693,
+        'gg2H_ptH_450_650_ptHJoverptH_gt15' : 0.0218401,
+        'gg2H_ptH_gt650_ptHJoverptH_gt15' : 0.00301522,
+        'gg2H_fwdH' : 8.66908,
+    },
+}
 
 stage_1_2_fine = {
     'ggf' : {
@@ -118,7 +151,7 @@ stage_1_2_fine = {
         414 : 'QQ2HLL_PTV_250_400_GE2J',
         415 : 'QQ2HLL_PTV_GT400_GE2J',
     },
-    'ggZH' : {
+    'ggzh' : {
         500 : 'GG2HLL_FWDH',
         501 : 'GG2HLL_PTV_0_75_0J',
         502 : 'GG2HLL_PTV_75_150_0J',
