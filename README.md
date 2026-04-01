@@ -49,7 +49,7 @@ mc20_13TeV:mc20_13TeV.346525.PowhegPythia8EvtGen_A14NNPDF23_NNPDF30ME_ttH125_gam
 
 ## Details
 1. The DAOD_PHYS samples used in this repository is un-skimmed, meaning that all generated events are retained, no cuts are applied at reconstruction level, and all truth information is preserved. 
-2. STXS information is stored in the `EventInfo` container, calculated from the central rivet routine [2], retrievable in DAOD_PHYS via:
+2. STXS information is stored in the `EventInfo` container, calculated from the central rivet routine [2-3], retrievable in DAOD_PHYS via:
 ```python
 htxs_categories_to_save = {
     "HTXS_Njets_pTjet30"                  : "int"  ,        
@@ -79,7 +79,8 @@ for weight_name in weights_to_save:
 ## References
 
 - [1] HiggsWeightTools: https://gitlab.cern.ch/atlas_higgs_combination/software/TruthWeightTools
-- [2] Rivet routine: https://gitlab.cern.ch/atlas/athena/-/blob/main/Generators/TruthRivetTools/Root/HiggsTruthCategoryTool.cxx
+- [2] Rivet call in athena: https://gitlab.cern.ch/atlas/athena/-/blob/main/Generators/TruthRivetTools/Root/HiggsTruthCategoryTool.cxx
+- [3] Rivet routine: https://gitlab.cern.ch/atlas/athena/-/blob/main/Generators/TruthRivetTools/TruthRivetTools/HiggsTemplateCrossSections.h
 - [?] ATLAS-CMS Run 2 comparison: https://indico.cern.ch/event/1619272/\#3-information-on-stxs-acceptan
 - [?] Twiki:  https://twiki.cern.ch/twiki/bin/view/AtlasProtected/StxsAcceptanceStudy
 - [?] Run 2 ATLAS numbers: https://gitlab.cern.ch/lhc-hcg/Run-2/couplings/atlas/-/blob/master/Acceptances/stage1_2_acc.yaml
