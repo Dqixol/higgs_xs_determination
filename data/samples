@@ -17,3 +17,7 @@ nohup rucio get mc23_13p6TeV.601484.PhPy8EG_PDF4LHC21_WpH125J_Wincl_MINLO_gammag
 nohup rucio get mc20_13TeV.345317.PowhegPythia8EvtGen_NNPDF30_AZNLO_WmH125J_Hyy_Wincl_MINLO.deriv.DAOD_PHYS.e5734_s3681_r13145_p7018 &
 nohup rucio get mc20_13TeV.345318.PowhegPythia8EvtGen_NNPDF30_AZNLO_WpH125J_Hyy_Wincl_MINLO.deriv.DAOD_PHYS.e5734_s3681_r13145_p7018 &
 nohup rucio get mc20_13TeV.345319.PowhegPythia8EvtGen_NNPDF30_AZNLO_ZH125J_Hyy_Zincl_MINLO.deriv.DAOD_PHYS.e5743_s3681_r13145_p7018 &
+
+ttH:
+nohup rucio get mc23_13p6TeV:mc23_13p6TeV.602422.PhPy8EG_PDF4LHC21_ttH125_tincl_gammagamma_1file.deriv.DAOD_PHYS.e8559_s4369_r16083_p7017 &
+nohup rucio get mc20_13TeV:mc20_13TeV.346525.PowhegPythia8EvtGen_A14NNPDF23_NNPDF30ME_ttH125_gamgam.deriv.DAOD_PHYS.e7488_s3681_r13145_p7018 &

@@ -4,7 +4,8 @@ import pandas as pd
 
 
 
-xs = 1.453 * 1e3 # in fb, see https://twiki.cern.ch/twiki/bin/view/LHCPhysics/LHCHWG136TeVxsec_extrap
+# see https://twiki.cern.ch/twiki/bin/view/LHCPhysics/LHCHWG136TeVxsec_extrap
+# see https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt13TeV
 
 channels =  {
     "mc20_ggf_hyy"  : (4.852E+01 * 1e3, ["ntuples/mc20_ggf_hyy_stxs.root"]),
@@ -34,11 +35,16 @@ for channel, (xs, files) in channels.items():
     dfs['450pt650'] = dfs['all'].Filter("HTXS_Higgs_pt > 450e3 && HTXS_Higgs_pt <= 650e3")
     dfs['650pt']    = dfs['all'].Filter("HTXS_Higgs_pt > 650e3")
 
-    len_hw_pdf4lhc_unc = set(dfs['all'].Range(10).Define('len_hw_pdf4lhc_unc', 'hw_pdf4lhc_unc.size()').AsNumpy(['len_hw_pdf4lhc_unc'])['len_hw_pdf4lhc_unc'])
-    len_hw_qcd         = set(dfs['all'].Range(10).Define('len_hw_qcd', 'hw_qcd.size()').AsNumpy(['len_hw_qcd'])['len_hw_qcd'])
-    assert (len(len_hw_pdf4lhc_unc) == 1 and len(len_hw_qcd) == 1)
-    len_hw_pdf4lhc_unc = list(len_hw_pdf4lhc_unc)[0]
-    len_hw_qcd         = list(len_hw_qcd)[0]
+    # len_hw_pdf4lhc_unc = set(dfs['all'].Range(10).Define('len_hw_pdf4lhc_unc', 'hw_pdf4lhc_unc.size()').AsNumpy(['len_hw_pdf4lhc_unc'])['len_hw_pdf4lhc_unc'])
+    # len_hw_qcd         = set(dfs['all'].Range(10).Define('len_hw_qcd', 'hw_qcd.size()').AsNumpy(['len_hw_qcd'])['len_hw_qcd'])
+    # assert (len(len_hw_pdf4lhc_unc) == 1 and len(len_hw_qcd) == 1)
+    # len_hw_pdf4lhc_unc = list(len_hw_pdf4lhc_unc)[0]
+    # len_hw_qcd         = list(len_hw_qcd)[0]
+    
+    if channel.startswith("mc20"):
+        len_hw_pdf4lhc_unc, len_hw_qcd = 30, 8
+    elif channel.startswith("mc23"):
+        len_hw_pdf4lhc_unc, len_hw_qcd = 41, 8
     dfs['all'].Filter("hw_alphaS_up == hw_alphaS_up", 'hw_alphaS_up_not_nan').Report().Print()
     weight_dict = {}
     futures = []
