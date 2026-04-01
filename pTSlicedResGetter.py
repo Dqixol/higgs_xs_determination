@@ -12,10 +12,12 @@ channels =  {
     "mc20_vbf_hyy"  : (3.779     * 1e3, ["ntuples/mc20_vbf_hyy_stxs.root"]),
     'mc20_wh_hyy'   : (1.369     * 1e3, ["ntuples/mc20_wph_hyy_stxs.root", "ntuples/mc20_wmh_hyy_stxs.root"]),
     'mc20_qqzh_hyy' : (0.8839    * 1e3, ["ntuples/mc20_qqzh_hyy_stxs.root"]),
+    'mc20_tth_hyy'  : (0.5065    * 1e3, ["ntuples/mc20_tth_hyy_stxs.root"]),
     "mc23_ggf_hyy"  : (5.217E+01 * 1e3, ["ntuples/mc23_ggf_hyy_stxs.root"]),
     "mc23_vbf_hyy"  : (4.075     * 1e3, ["ntuples/mc23_vbf_hyy_stxs.root"]),
     'mc23_wh_hyy'   : (1.453     * 1e3, ["ntuples/mc23_wph_hyy_stxs.root", "ntuples/mc23_wmh_hyy_stxs.root"]),
     'mc23_qqzh_hyy' : (0.9422    * 1e3, ["ntuples/mc23_qqzh_hyy_stxs.root"]),
+    'mc23_tth_hyy'  : (0.5688    * 1e3, ["ntuples/mc23_tth_hyy_stxs.root"]),
 }
 
 weights = [
