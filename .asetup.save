@@ -44,7 +44,9 @@ if [ -z "${FC:+x}" ]; then
     [[ -z "$FC" ]] && unset FC
 fi
 export CMAKE_NO_VERBOSE="1"
-export CMAKE_BUILD_PARALLEL_LEVEL="32"
+if [ -z "${CMAKE_BUILD_PARALLEL_LEVEL:+x}" ]; then
+    export CMAKE_BUILD_PARALLEL_LEVEL="32"
+fi
 type lsetup &>/dev/null
 if [ $? -ne 0 ]; then
    if [ -z "$ATLAS_LOCAL_ROOT_BASE" ]; then
@@ -56,20 +58,20 @@ if [ $? -ne 0 ]; then
    source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh --quiet
 fi
 source $ATLAS_LOCAL_ROOT_BASE/packageSetups/localSetup.sh --quiet "cmake 4.2.1"
-export AtlasVersion="25.2.88"
+export AtlasVersion="25.2.89"
 export AtlasProject="AnalysisBase"
 export AtlasBaseDir="/cvmfs/atlas.cern.ch/repo/sw/software/25.2"
 export ATLAS_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/25.2"
 export AtlasBuildBranch="25.2"
-export AtlasArea="/cvmfs/atlas.cern.ch/repo/sw/software/25.2/AnalysisBase/25.2.88"
+export AtlasArea="/cvmfs/atlas.cern.ch/repo/sw/software/25.2/AnalysisBase/25.2.89"
 export AtlasReleaseType="stable"
-export AtlasBuildStamp="2026-03-19T2100"
+export AtlasBuildStamp="2026-04-01T2100"
 export LCG_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/25.2/sw/lcg/releases"
 export TDAQ_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/tdaq/offline"
-source /cvmfs/atlas.cern.ch/repo/sw/software/25.2/AnalysisBase/25.2.88/InstallArea/x86_64-el9-gcc14-opt/setup.sh
+source /cvmfs/atlas.cern.ch/repo/sw/software/25.2/AnalysisBase/25.2.89/InstallArea/x86_64-el9-gcc14-opt/setup.sh
 asetup_status=$?
 if [ ${asetup_status} -ne 0 ]; then
-    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas.cern.ch/repo/sw/software/25.2/AnalysisBase/25.2.88/InstallArea/x86_64-el9-gcc14-opt/setup.sh) failed"
+    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas.cern.ch/repo/sw/software/25.2/AnalysisBase/25.2.89/InstallArea/x86_64-el9-gcc14-opt/setup.sh) failed"
 fi
 export TestArea="/data/atlas02/users/dongq/higgs_xs_determination"
 alias_sys_exe emacs
@@ -96,7 +98,7 @@ unset pythonpath_items usrlibPath usrlibPath64
 #Release Summary as follows:
 #Release base=/cvmfs/atlas.cern.ch/repo/sw/software/25.2
 #Release project=AnalysisBase
-#Release releaseNum=25.2.88
+#Release releaseNum=25.2.89
 #Release asconfig=x86_64-el9-gcc14-opt
 
 # Execute user-specified epilog

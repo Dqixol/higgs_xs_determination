@@ -128,6 +128,7 @@ official_1_2_fine_run2 = {
     }
 }
 
+# see https://gitlab.cern.ch/atlas/athena/-/blob/main/Generators/TruthRivetTools/TruthRivetTools/HiggsTemplateCrossSectionsDefs.h
 stage_1_2_fine = {
     'ggf' : {
         100 : 'GG2H_FWDH',
