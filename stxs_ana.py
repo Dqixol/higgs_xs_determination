@@ -1,6 +1,7 @@
 
 import ROOT
-ROOT.EnableImplicitMT(16)
+ROOT.EnableImplicitMT(64)
+ROOT.gROOT.SetBatch()
 import pandas as pd
 import libPy
 
@@ -44,6 +45,7 @@ weights = [
 for channel, files in channels.items():
     dfs = {}
     dfs['ALL']      = ROOT.RDataFrame("tree", files)
+    print(f"Processing channel: {channel}, number of events: {float(dfs['ALL'].Count().GetValue()):.2e}")
     dfs['UNKNOWN']  = dfs['ALL'].Filter("HTXS_Stage1_2_Fine_Category_pTjet30 == 0")
     for broad_category in stxs_broad_categories[channel]:
         for val, category in libPy.stage_1_2_fine[broad_category].items():
@@ -64,22 +66,28 @@ for channel, files in channels.items():
                     tmp_df = df.Define(weight_name, f"{weight}.at({i})").Filter(f"{weight_name} == {weight_name}")
                     weight_dict[slice][weight_name] = tmp_df.Sum(weight_name)
                     weight_dict[slice][f"{weight_name}_error"] = tmp_df.Define(f"{weight_name}_squared", f"{weight_name}*{weight_name}").Sum(f"{weight_name}_squared")
+                    weight_dict[slice][f'{weight_name}_count'] = tmp_df.Count()
                     futures.append(weight_dict[slice][weight_name])
                     futures.append(weight_dict[slice][f"{weight_name}_error"])
+                    futures.append(weight_dict[slice][f'{weight_name}_count'])
             elif weight == "hw_qcd":
                 for i in range(len_hw_qcd):
                     weight_name = f"{weight}_{i}"
                     tmp_df = df.Define(weight_name, f"{weight}.at({i})").Filter(f"{weight_name} == {weight_name}")
                     weight_dict[slice][weight_name] = tmp_df.Sum(weight_name)
                     weight_dict[slice][f"{weight_name}_error"] = tmp_df.Define(f"{weight_name}_squared", f"{weight_name}*{weight_name}").Sum(f"{weight_name}_squared")
+                    weight_dict[slice][f'{weight_name}_count'] = tmp_df.Count()
                     futures.append(weight_dict[slice][weight_name])
                     futures.append(weight_dict[slice][f"{weight_name}_error"])
+                    futures.append(weight_dict[slice][f'{weight_name}_count'])
             else:
                 tmp_df = df.Filter(f"{weight} == {weight}")
                 weight_dict[slice][weight] = tmp_df.Sum(weight)
                 weight_dict[slice][f"{weight}_error"] = tmp_df.Define(f"{weight}_squared", f"{weight}*{weight}").Sum(f"{weight}_squared")
+                weight_dict[slice][f'{weight}_count'] = tmp_df.Count()
                 futures.append(weight_dict[slice][weight])
                 futures.append(weight_dict[slice][f"{weight}_error"])
+                futures.append(weight_dict[slice][f'{weight}_count'])
     ROOT.RDF.RunGraphs(futures)
 
     calc_dict = {}
@@ -93,11 +101,14 @@ for channel, files in channels.items():
 
 
     pdf = pd.DataFrame(calc_dict)
-    pdf_values = pdf.loc[~pdf.index.str.endswith("_error")]
+    pdf_values = pdf.loc[~pdf.index.str.endswith("_error") & ~pdf.index.str.endswith("_count")]
     pdf_error = pdf.loc[pdf.index.str.endswith("_error")]
+    pdf_count = pdf.loc[pdf.index.str.endswith("_count")]
     pdf_error.index = pdf_error.index.str.replace("_error", "")
+    pdf_count.index = pdf_count.index.str.replace("_count", "")
     pdf_error = pdf_error.apply(lambda row : (row / pdf_values.loc[row.name]), axis=1)
     pdf_values = pdf_values.apply(lambda row : (row / row['ALL']), axis=1)
     pdf_error = pdf_error.apply(lambda row : row * pdf_values.loc[row.name], axis=1)
     pdf_values.to_csv(f"res_stxs/{channel}.csv", index=True)
     pdf_error.to_csv(f"res_stxs/{channel}_error.csv", index=True)
+    pdf_count.to_csv(f"res_stxs/{channel}_count.csv", index=True)

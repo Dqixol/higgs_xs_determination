@@ -21,10 +21,10 @@ export PATH="${ASETUP_SYSBIN}:${PATH}"
 if [ -n "${MAKEFLAGS:+x}" ]; then
     asetup_flags=`echo ${MAKEFLAGS} | \grep ' -l'`
     if [ -z "${asetup_flags}" ]; then
-        export MAKEFLAGS="${MAKEFLAGS} -l32"
+        export MAKEFLAGS="${MAKEFLAGS} -l128"
     fi
 else
-    export MAKEFLAGS="-j32 -l32"
+    export MAKEFLAGS="-j128 -l128"
 fi
 source /cvmfs/sft.cern.ch/lcg/releases/gcc/14.2.0-2f0a0/x86_64-el9/setup.sh
 if [ -z "${CC:+x}" ]; then
@@ -44,7 +44,9 @@ if [ -z "${FC:+x}" ]; then
     [[ -z "$FC" ]] && unset FC
 fi
 export CMAKE_NO_VERBOSE="1"
-export CMAKE_BUILD_PARALLEL_LEVEL="32"
+if [ -z "${CMAKE_BUILD_PARALLEL_LEVEL:+x}" ]; then
+    export CMAKE_BUILD_PARALLEL_LEVEL="128"
+fi
 type lsetup &>/dev/null
 if [ $? -ne 0 ]; then
    if [ -z "$ATLAS_LOCAL_ROOT_BASE" ]; then

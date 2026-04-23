@@ -1,3 +1,4 @@
+rm -rf logs/*
 nohup python ntupler.py --channel mc23_ggf_hyy > logs/mc23_ggf_hyy.log 2>&1 &
 nohup python ntupler.py --channel mc23_vbf_hyy > logs/mc23_vbf_hyy.log 2>&1 &
 nohup python ntupler.py --channel mc23_qqzh_hyy > logs/mc23_qqzh_hyy.log 2>&1 &

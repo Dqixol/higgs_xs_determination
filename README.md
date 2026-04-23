@@ -17,7 +17,7 @@ cmake ../source_hwt
 make
 cd ..
 source build/*/setup.sh
-python ntupler.py
+bash ntupleProd.sh
 ```
 
 ## Sample retrieval

@@ -1,6 +1,6 @@
 print("Warming up...")
 import ROOT
-ROOT.EnableImplicitMT(2)
+ROOT.EnableImplicitMT(4)
 ROOT.gROOT.SetBatch()
 ROOT.xAOD.Init()
 ROOT.xAOD.EventInfo()
@@ -42,20 +42,20 @@ assert args.channel in channels, f"Channel {args.channel} is not in the list of 
 channel = args.channel
 
 sample_dict = {
-    "mc20_ggf_hyy":  'data/mc20_13TeV.343981.PowhegPythia8EvtGen_NNLOPS_nnlo_30_ggH125_gamgam.deriv.DAOD_PHYS.e5607_s3681_r13145_p7018',
-    "mc20_vbf_hyy":  'data/mc20_13TeV.346214.PowhegPy8EG_NNPDF30_AZNLOCTEQ6L1_VBFH125_gamgam.deriv.DAOD_PHYS.e6970_s3681_r13145_p7018',
-    "mc20_qqzh_hyy": 'data/mc20_13TeV.345319.PowhegPythia8EvtGen_NNPDF30_AZNLO_ZH125J_Hyy_Zincl_MINLO.deriv.DAOD_PHYS.e5743_s3681_r13145_p7018',
-    "mc20_ggzh_hyy": 'data/mc20_13TeV.345061.PowhegPythia8EvtGen_NNPDF3_AZNLO_ggZH125_HgamgamZinc.deriv.DAOD_PHYS.e5762_s3681_r13145_p7018',
-    "mc20_wph_hyy":  'data/mc20_13TeV.345318.PowhegPythia8EvtGen_NNPDF30_AZNLO_WpH125J_Hyy_Wincl_MINLO.deriv.DAOD_PHYS.e5734_s3681_r13145_p7018',
-    "mc20_wmh_hyy":  'data/mc20_13TeV.345317.PowhegPythia8EvtGen_NNPDF30_AZNLO_WmH125J_Hyy_Wincl_MINLO.deriv.DAOD_PHYS.e5734_s3681_r13145_p7018',
-    "mc20_tth_hyy":  "data/mc20_13TeV.346525.PowhegPythia8EvtGen_A14NNPDF23_NNPDF30ME_ttH125_gamgam.deriv.DAOD_PHYS.e7488_s3681_r13145_p7018",
-    "mc23_ggf_hyy":  'data/mc23_13p6TeV.602421.PhPy8EG_PDF4LHC21_ggH_NNLOPS_gammagamma.deriv.DAOD_PHYS.e8559_s4369_r16083_p7017',
-    "mc23_vbf_hyy":  'data/mc23_13p6TeV.601482.PhPy8EG_PDF4LHC21_VBFH125_gammagamma.deriv.DAOD_PHYS.e8559_s4369_r16083_p7017',
-    "mc23_qqzh_hyy": 'data/mc23_13p6TeV.601523.PhPy8EG_PDF4LHC21_ZH125J_Zincl_MINLO_gammagamma.deriv.DAOD_PHYS.e8559_s4162_r14622_p7017',
-    "mc23_ggzh_hyy": 'data/mc23_13p6TeV.601522.PhPy8EG_PDF4LHC21_ggZH125_Zincl_gammagamma.deriv.DAOD_PHYS.e8559_s4369_r16083_p7017',
-    "mc23_wph_hyy":  'data/mc23_13p6TeV.601484.PhPy8EG_PDF4LHC21_WpH125J_Wincl_MINLO_gammagamma.deriv.DAOD_PHYS.e8559_a934_r16083_p7017',
-    "mc23_wmh_hyy":  'data/mc23_13p6TeV.601483.PhPy8EG_PDF4LHC21_WmH125J_Wincl_MINLO_gammagamma.deriv.DAOD_PHYS.e8559_a934_r16083_p7017',
-    "mc23_tth_hyy":  "data/mc23_13p6TeV.602422.PhPy8EG_PDF4LHC21_ttH125_tincl_gammagamma_1file.deriv.DAOD_PHYS.e8559_s4369_r16083_p7017",
+    "mc20_ggf_hyy":    'data/mc20_13TeV.343981.*/*.root.1',
+    "mc20_vbf_hyy":    'data/mc20_13TeV.346214.*/*.root.1',
+    "mc20_qqzh_hyy":   'data/mc20_13TeV.345319.*/*.root.1',
+    "mc20_ggzh_hyy":   'data/mc20_13TeV.345061.*/*.root.1',
+    "mc20_wph_hyy":    'data/mc20_13TeV.345318.*/*.root.1',
+    "mc20_wmh_hyy":    'data/mc20_13TeV.345317.*/*.root.1',
+    "mc20_tth_hyy":    "data/mc20_13TeV.346525.*/*.root.1",
+    "mc23_ggf_hyy":  'data/mc23_13p6TeV.602421.*/*.root.1',
+    "mc23_vbf_hyy":  'data/mc23_13p6TeV.601482.*/*.root.1',
+    "mc23_qqzh_hyy": 'data/mc23_13p6TeV.601523.*/*.root.1',
+    "mc23_ggzh_hyy": 'data/mc23_13p6TeV.601522.*/*.root.1',
+    "mc23_wph_hyy":  'data/mc23_13p6TeV.601484.*/*.root.1',
+    "mc23_wmh_hyy":  'data/mc23_13p6TeV.601483.*/*.root.1',
+    "mc23_tth_hyy":  "data/mc23_13p6TeV.602422.*/*.root.1",
 }
 
 weights_to_save = [
@@ -79,7 +79,7 @@ htxs_categories_to_save = {
 # for wrights used see: https://gitlab.cern.ch/atlas_higgs_combination/software/TruthWeightTools/blob/master/Root/HiggsWeightTool.cxx#L131
 
 print(f"!!!!!!!!!!!!!!!!! Processing {channel}... !!!!!!!!!!!!!!!!!!")
-f = glob.glob(sample_dict[channel] + "/*.root.1")
+f = glob.glob(sample_dict[channel])
 df = Helpers.MakexAODDataFrame(f)
 
 df, hwt = libPy.getHiggsWeightTool(df, channel)
