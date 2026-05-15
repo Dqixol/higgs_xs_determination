@@ -6,3 +6,5 @@ build
 __pycache__
 logs
 nohup.out
+*.gz.1
+*.gz.1.part
